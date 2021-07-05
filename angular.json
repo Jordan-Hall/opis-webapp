@@ -1,6 +1,277 @@
 {
   "version": 1,
   "projects": {
+    "account": {
+      "projectType": "library",
+      "root": "libs/account",
+      "sourceRoot": "libs/account/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/account"],
+          "options": {
+            "project": "libs/account/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/account/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/account/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/account"],
+          "options": {
+            "jestConfig": "libs/account/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/account/src/**/*.ts",
+              "libs/account/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "auth-firebase": {
+      "projectType": "library",
+      "root": "libs/auth/firebase",
+      "sourceRoot": "libs/auth/firebase/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/auth/firebase"],
+          "options": {
+            "project": "libs/auth/firebase/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/auth/firebase/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/auth/firebase/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/auth/firebase"],
+          "options": {
+            "jestConfig": "libs/auth/firebase/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/auth/firebase/src/**/*.ts",
+              "libs/auth/firebase/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "auth-ui": {
+      "projectType": "library",
+      "root": "libs/auth/ui",
+      "sourceRoot": "libs/auth/ui/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/auth/ui"],
+          "options": {
+            "project": "libs/auth/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/auth/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/auth/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/auth/ui"],
+          "options": {
+            "jestConfig": "libs/auth/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/auth/ui/src/**/*.ts",
+              "libs/auth/ui/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "dashboard": {
+      "projectType": "library",
+      "root": "libs/dashboard",
+      "sourceRoot": "libs/dashboard/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/dashboard"],
+          "options": {
+            "project": "libs/dashboard/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/dashboard/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/dashboard/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/dashboard"],
+          "options": {
+            "jestConfig": "libs/dashboard/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/dashboard/src/**/*.ts",
+              "libs/dashboard/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "storage-core": {
+      "projectType": "library",
+      "root": "libs/storage/core",
+      "sourceRoot": "libs/storage/core/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/storage/core"],
+          "options": {
+            "project": "libs/storage/core/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/storage/core/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/storage/core/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/storage/core"],
+          "options": {
+            "jestConfig": "libs/storage/core/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/storage/core/src/**/*.ts",
+              "libs/storage/core/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "storage-firebase": {
+      "projectType": "library",
+      "root": "libs/storage/firebase",
+      "sourceRoot": "libs/storage/firebase/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/storage/firebase"],
+          "options": {
+            "project": "libs/storage/firebase/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/storage/firebase/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/storage/firebase/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/storage/firebase"],
+          "options": {
+            "jestConfig": "libs/storage/firebase/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/storage/firebase/src/**/*.ts",
+              "libs/storage/firebase/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "ui-webapp-template": {
+      "projectType": "library",
+      "root": "libs/ui/webapp/template",
+      "sourceRoot": "libs/ui/webapp/template/src",
+      "prefix": "opis",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui/webapp/template"],
+          "options": {
+            "jestConfig": "libs/ui/webapp/template/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui/webapp/template/src/**/*.ts",
+              "libs/ui/webapp/template/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "webapp": {
       "projectType": "application",
       "root": "apps/webapp",
@@ -113,6 +384,47 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/webapp-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "zoneaware-rx-for": {
+      "projectType": "library",
+      "root": "libs/zoneaware/rx-for",
+      "sourceRoot": "libs/zoneaware/rx-for/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/zoneaware/rx-for"],
+          "options": {
+            "project": "libs/zoneaware/rx-for/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/zoneaware/rx-for/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/zoneaware/rx-for/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/zoneaware/rx-for"],
+          "options": {
+            "jestConfig": "libs/zoneaware/rx-for/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/zoneaware/rx-for/src/**/*.ts",
+              "libs/zoneaware/rx-for/src/**/*.html"
+            ]
           }
         }
       }

@@ -1,0 +1,32 @@
+.auth-container {
+  @apply flex items-center min-h-screen p-4 lg:p-0 bg-gray-100 lg:justify-center;
+  &__grid{
+    @apply flex flex-col overflow-hidden bg-white rounded-md shadow-lg md:flex-row md:flex-1 lg:max-w-screen-md
+  }
+  &__right {
+    @apply p-5 bg-white md:flex-1;
+  }
+  &__content {
+    @apply p-4 py-6 text-white bg-blue-500 md:w-80 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly;
+  }
+  &_text-logo {
+    @apply my-3 text-4xl font-bold tracking-wider text-center;
+  }
+
+  &__info {
+    @apply mt-6 font-normal text-center text-gray-300 md:mt-0;
+  }
+
+  &__singup-login {
+    @apply flex flex-col items-center justify-center mt-10 text-center;
+    &-action {
+      @apply underline;
+    }
+  }
+  &__terms {
+    @apply mt-6 text-sm text-center text-gray-300;
+    &-action {
+      @apply underline;
+    }
+  }
+}

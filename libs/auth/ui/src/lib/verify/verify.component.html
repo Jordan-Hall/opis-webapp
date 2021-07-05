@@ -1,0 +1,19 @@
+<div class="verify__content">
+  <h3 class="verify-header">Thank You for Registering</h3>
+  <ng-container *ngIf="authService.userData as user">
+    <p>
+      A confirmation email has been sent to <b>{{ user.email }}</b>.
+    </p>
+    <p>
+      Please check your email and click the verification link. If you do not see
+      the email, check your spam/junk folder as well.
+    </p>
+  </ng-container>
+
+  <p>
+    Still no email?
+    <button type="button" class="verify-resend" (click)="resend()">
+      Resend Verification Email
+    </button>
+  </p>
+</div>

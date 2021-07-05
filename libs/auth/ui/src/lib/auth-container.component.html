@@ -1,0 +1,32 @@
+<div class="auth-container">
+  <div class="auth-container__grid">
+    <div
+      class="auth-container__content">
+      <div class="auth-container_text-logo">
+        <a href="#">OpisHub</a>
+      </div>
+      <p class="auth-container__info">
+        OpisHub allows you to earn money from your old devices
+      </p>
+      <p class="auth-container__singup-login">
+        <ng-container *rxLet="isLogin$; let isLogin">
+          <ng-container *ngIf="isLogin ;else login">
+            <span>Don't have an account?</span>
+            <a [routerLink]="['./register']" class="auth-container__singup-login-action">Get Started!</a>
+          </ng-container>
+          <ng-template #login>
+            <span>Already have an account?</span>
+            <a [routerLink]="['./login']" class="auth-container__singup-login-action">Login!</a>
+          </ng-template>
+
+        </ng-container>
+      </p>
+      <p class="auth-container__terms">
+        Read our <a href="#" class="auth-container__terms-action">terms</a> and <a href="#" class="auth-container__terms-action">conditions</a>
+      </p>
+    </div>
+    <div class="auth-container__right">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
