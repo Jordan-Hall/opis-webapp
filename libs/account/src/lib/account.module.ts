@@ -6,11 +6,14 @@ import { AccountSidebarComponent } from './sidebar.component';
 import { ContainerComponent } from './container-component';
 import { DetailsComponent } from './sections/details/details.component';
 import { TeamComponent } from './sections/team/team.component';
+import { LetModule, PushModule } from '@rx-angular/template';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    LetModule,
+    PushModule,
     RouterModule.forChild([
       {
         path: '',

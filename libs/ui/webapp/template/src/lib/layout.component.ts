@@ -9,10 +9,11 @@ import {
   trigger
 } from "@angular/animations";
 import { map, startWith } from 'rxjs/operators';
-import { FirebaseAuthService } from '@opishub/auth-firebase';
+import { FirebaseAuthService, User } from '@opishub/auth-firebase';
 
 interface LayoutComponentState {
-  mobileOpen: boolean
+  mobileOpen: boolean;
+  user: User
 }
 
 @Component({
@@ -65,15 +66,19 @@ export class LayoutComponent {
     return open ? 'open' : 'closed'
   }))
 
+  readonly user$ = this.state.select('user');
+
   get mobileOpen(): boolean {
     return this.state.get('mobileOpen');
   }
 
   constructor(
     private state: RxState<LayoutComponentState>,
-    public authService: FirebaseAuthService,
+    protected authService: FirebaseAuthService,
     private router: Router
-  ) { }
+  ) {
+    state.connect('user', authService.userData$);
+  }
 
   toggleMobileMenu() {
     this.state.set({ mobileOpen: !this.mobileOpen})

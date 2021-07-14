@@ -16,13 +16,20 @@
     "baseUrl": ".",
     "paths": {
       "@opis/account": ["libs/account/src/index.ts"],
+      "@opis/cdk": ["libs/pref-utils/cdk/src/index.ts"],
       "@opis/dashboard": ["libs/dashboard/src/index.ts"],
       "@opis/firestorage": ["libs/storage/firebase/src/index.ts"],
+      "@opis/ms2time": ["libs/ms-to-time/src/index.ts"],
+      "@opis/rx-effects": ["libs/pref-utils/rx-effects/src/index.ts"],
       "@opis/storage": ["libs/storage/core/src/index.ts"],
       "@opis/template": ["libs/ui/webapp/template/src/index.ts"],
       "@opishub/auth-firebase": ["libs/auth/firebase/src/index.ts"],
       "@opishub/auth-ui": ["libs/auth/ui/src/index.ts"],
-      "@opishub/rx-for": ["libs/zoneaware/rx-for/src/index.ts"]
+      "@opishub/boinc": ["libs/boinc/src/index.ts"],
+      "@opishub/rx-for": ["libs/zoneaware/rx-for/src/index.ts"],
+      "crypto": ["./node_modules/crypto-browserify"],
+      "stream": ["./node_modules/stream-browserify"],
+      "timers": ["./node_modules/timers-browserify"]
     }
   },
   "exclude": ["node_modules", "tmp"]

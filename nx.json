@@ -39,7 +39,19 @@
     "auth-ui": {
       "tags": ["ui"]
     },
+    "boinc": {
+      "tags": []
+    },
     "dashboard": {
+      "tags": []
+    },
+    "ms-to-time": {
+      "tags": []
+    },
+    "pref-utils-cdk": {
+      "tags": []
+    },
+    "pref-utils-rx-effects": {
       "tags": []
     },
     "storage-core": {

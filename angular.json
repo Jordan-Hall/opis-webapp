@@ -124,6 +124,47 @@
         }
       }
     },
+    "boinc": {
+      "projectType": "library",
+      "root": "libs/boinc",
+      "sourceRoot": "libs/boinc/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/boinc"],
+          "options": {
+            "project": "libs/boinc/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/boinc/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/boinc/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/boinc"],
+          "options": {
+            "jestConfig": "libs/boinc/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/boinc/src/**/*.ts",
+              "libs/boinc/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "dashboard": {
       "projectType": "library",
       "root": "libs/dashboard",
@@ -160,6 +201,129 @@
             "lintFilePatterns": [
               "libs/dashboard/src/**/*.ts",
               "libs/dashboard/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "ms-to-time": {
+      "projectType": "library",
+      "root": "libs/ms-to-time",
+      "sourceRoot": "libs/ms-to-time/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/ms-to-time"],
+          "options": {
+            "project": "libs/ms-to-time/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/ms-to-time/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/ms-to-time/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ms-to-time"],
+          "options": {
+            "jestConfig": "libs/ms-to-time/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ms-to-time/src/**/*.ts",
+              "libs/ms-to-time/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "pref-utils-cdk": {
+      "projectType": "library",
+      "root": "libs/pref-utils/cdk",
+      "sourceRoot": "libs/pref-utils/cdk/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/pref-utils/cdk"],
+          "options": {
+            "project": "libs/pref-utils/cdk/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/pref-utils/cdk/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/pref-utils/cdk/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/pref-utils/cdk"],
+          "options": {
+            "jestConfig": "libs/pref-utils/cdk/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/pref-utils/cdk/src/**/*.ts",
+              "libs/pref-utils/cdk/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "pref-utils-rx-effects": {
+      "projectType": "library",
+      "root": "libs/pref-utils/rx-effects",
+      "sourceRoot": "libs/pref-utils/rx-effects/src",
+      "prefix": "opis",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/pref-utils/rx-effects"],
+          "options": {
+            "project": "libs/pref-utils/rx-effects/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/pref-utils/rx-effects/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/pref-utils/rx-effects/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/pref-utils/rx-effects"],
+          "options": {
+            "jestConfig": "libs/pref-utils/rx-effects/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/pref-utils/rx-effects/src/**/*.ts",
+              "libs/pref-utils/rx-effects/src/**/*.html"
             ]
           }
         }
@@ -334,6 +498,9 @@
             "development": {
               "browserTarget": "webapp:build:development"
             }
+          },
+          "options": {
+            "proxyConfig": "apps/webapp/src/proxy.conf.json"
           },
           "defaultConfiguration": "development"
         },

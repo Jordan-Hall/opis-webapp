@@ -47,16 +47,16 @@
         </nav>
       </div>
       <div class="flex-shrink-0 flex border-t border-blue-gray-200 p-4">
-        <a [routerLink]="['/account']" routerLinkActive="router-link-active"  class="flex-shrink-0 group block">
+        <a [routerLink]="['/account']" routerLinkActive="router-link-active"  class="flex-shrink-0 group block" *rxLet="user$ as user">
           <div class="flex items-center">
             <div>
               <img class="inline-block h-10 w-10 rounded-full"
-                [src]="authService.userData?.photoURL"
-                [alt]="authService.userData?.displayName || authService.userData?.email">
+                [src]="user?.photoURL"
+                [alt]="user?.displayName || user?.email">
             </div>
             <div class="ml-3">
               <p class="text-base font-medium text-gray-200 group-hover:text-gray-300">
-                {{ authService.userData?.displayName || authService.userData?.email }}
+                {{ user?.displayName ||user?.email }}
               </p>
               <p class="text-sm font-medium text-gray-300 group-hover:text-gray-200">
                 Account Settings
@@ -83,10 +83,10 @@
       <div class="flex flex-col h-0 flex-1 overflow-y-auto bg-blue-600">
         <div class="flex-1 flex flex-col">
           <div class="flex-shrink-0 bg-blue-700 py-4 flex items-center justify-center">
-            <img class="h-8 w-auto" src="/assets/logo.svg" alt="OPISHUB">
+            <img class="h-12 w-auto" src="/assets/logo.svg" alt="OPISHUB">
           </div>
           <nav aria-label="Sidebar" class="py-6 flex flex-col items-center space-y-3">
-            <a [routerLink]="['/']"
+            <a [routerLink]="['dashboard']"
             routerLinkActive="bg-blue-700" class="flex items-center p-4 rounded-lg text-blue-200 hover:bg-blue-700">
               <!-- Heroicon name: outline/home -->
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -119,13 +119,13 @@
           </nav>
         </div>
         <div class="flex-shrink-0 flex pb-5">
-          <a href="#" class="flex-shrink-0 w-full">
+          <a href="#" class="flex-shrink-0 w-full" *rxLet="user$ as user">
             <img class="block mx-auto h-10 w-10 rounded-full"
-              [src]="authService.userData?.photoURL"
-              [alt]="authService.userData?.displayName || authService.userData?.email">
+              [src]="user?.photoURL"
+              [alt]="user?.displayName || user?.email">
             <div class="sr-only">
               <p>
-                {{ authService.userData?.displayName || authService.userData?.email }}
+                {{ user?.displayName || user?.email }}
               </p>
               <p>
                 Account settings
@@ -144,7 +144,7 @@
     <div class="lg:hidden">
       <div class="bg-blue-600 py-2 px-4 flex items-center justify-between sm:px-6">
         <div>
-          <img class="h-8 w-auto" src="/assets/logo.svg" alt="OPISHUB">
+          <img class="h-12 w-auto" src="/assets/logo.svg" alt="OPISHUB">
         </div>
         <div>
           <button type="button" (click)="toggleMobileMenu()"

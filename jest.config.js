@@ -9,5 +9,9 @@ module.exports = {
     '<rootDir>/libs/storage/firebase',
     '<rootDir>/libs/storage/core',
     '<rootDir>/libs/dashboard',
+    '<rootDir>/libs/pref-utils/rx-effects',
+    '<rootDir>/libs/pref-utils/cdk',
+    '<rootDir>/libs/boinc',
+    '<rootDir>/libs/ms-to-time',
   ],
 };

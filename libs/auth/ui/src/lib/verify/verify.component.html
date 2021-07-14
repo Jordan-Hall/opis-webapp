@@ -1,6 +1,6 @@
 <div class="verify__content">
   <h3 class="verify-header">Thank You for Registering</h3>
-  <ng-container *ngIf="authService.userData as user">
+  <ng-container *rxLet="authService.userData$ as user">
     <p>
       A confirmation email has been sent to <b>{{ user.email }}</b>.
     </p>

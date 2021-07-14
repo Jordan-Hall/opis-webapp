@@ -2,7 +2,7 @@
   <div class="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:py-12 lg:px-8">
     <h1 class="text-3xl font-extrabold text-blue-gray-900">Account</h1>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" class="mt-6 space-y-8 divide-y divide-y-blue-gray-200" >
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()" class="mt-6 space-y-8 divide-y divide-y-blue-gray-200" >
       <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-6 sm:gap-x-6">
         <div class="sm:col-span-6">
           <h2 class="text-xl font-medium text-blue-gray-900">Profile</h2>
@@ -31,9 +31,8 @@
             Photo
           </label>
           <div class="mt-1 flex items-center">
-            <img class="inline-block h-12 w-12 rounded-full" *ngIf="profilePreview"
-               [src]="profilePreview"
-              alt="Preview of new profile">
+              <img *ngIf="profilePreview$ | push as profilePreview" class="inline-block h-12 w-12 rounded-full" [src]="profilePreview" alt="Preview of new profile">
+
             <div class="ml-4 flex">
               <div
                 class="relative bg-white py-2 px-3 border border-blue-gray-300 rounded-md shadow-sm flex items-center cursor-pointer hover:bg-blue-gray-50 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-blue-gray-50 focus-within:ring-blue-500">

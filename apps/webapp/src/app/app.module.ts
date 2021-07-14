@@ -8,7 +8,8 @@ import { LayoutComponent, LayoutModule } from '@opis/template';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { BOINCSERVER, TOTALCREDITMATHS } from '@opishub/boinc';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -16,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     LayoutModule,
+    HttpClientModule,
     RouterModule.forRoot([
       {
         path: 'auth',
@@ -31,8 +33,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         children: [
           {
             path: '',
-            pathMatch: '',
-            redirectTo: 'dashboard',
+            pathMatch: 'full',
+            redirectTo: 'dashboard'
           },
           {
             path: 'dashboard',
@@ -46,7 +48,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       }
     ])
   ],
-  providers: [],
+  providers: [
+    { provide: BOINCSERVER, useValue: environment.boincUrl },
+    { provide: TOTALCREDITMATHS, useValue: environment.creditMaths },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

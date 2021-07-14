@@ -1,16 +1,19 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Subject, from } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {  from } from 'rxjs';
+import { tap, switchMap, map } from 'rxjs/operators';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageUtilService } from '@opis/storage';
 import { FirebaseStorageService } from '@opis/firestorage';
-import { FirebaseAuthService } from '@opishub/auth-firebase'
+import { FirebaseAuthService, User } from '@opishub/auth-firebase'
 import { RxState } from '@rx-angular/state';
 import firebase from 'firebase';
+import { RxEffects } from '@opis/rx-effects';
 
 interface DetailsComponentState {
   photo: FileList
-  uploadProgress: number | undefined
+  uploadProgress: number | undefined;
+  user: User;
+  profilePreview: string | ArrayBuffer | null
 }
 type SubmitData = { photo: string, firstName: string, lastName: string }
 
@@ -19,36 +22,40 @@ type SubmitData = { photo: string, firstName: string, lastName: string }
   templateUrl: 'details.component.html',
   styleUrls: ['./detail.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [RxState]
+  providers: [RxState, RxEffects]
 })
 
 export class DetailsComponent {
   fileToUpload?: File;
-  profilePreview?: string | ArrayBuffer | null = this.authService.userData?.photoURL;
-  form: FormGroup
-
+  form?: FormGroup
+  readonly profilePreview$ = this.state.select('profilePreview');
 
   constructor(
     private authService: FirebaseAuthService,
     readonly formBuilder: FormBuilder,
     private readonly storageService: FirebaseStorageService,
     private readonly utilService: StorageUtilService,
-    protected readonly state: RxState<DetailsComponentState>
+    protected readonly state: RxState<DetailsComponentState>,
+    effects: RxEffects,
+    changeDetectRef: ChangeDetectorRef
   ) {
-    this.form = this.formBuilder.group({
-      photo: [this.authService.userData?.photoURL, [Validators.required]],
-      photoSource: [null, [Validators.required, this.image.bind(this)]],
-      firstName: this.formBuilder.control(this.authService.userData?.displayName?.split(' ').slice(0, -1).join(' '), [Validators.required]),
-      lastName: this.formBuilder.control(this.authService.userData?.displayName?.split(' ').slice(-1).join(' '), [Validators.required])
+    state.connect('user', this.authService.userData$);
+    state.connect('profilePreview', this.authService.userData$.pipe(map(user => user.photoURL)));
+    effects.register(state.select('user'), user => {
+      this.form = this.formBuilder.group({
+        photo: [user?.photoURL, [Validators.required]],
+        photoSource: [null, [Validators.required, this.image.bind(this)]],
+        firstName: this.formBuilder.control(user?.displayName?.split(' ').slice(0, -1).join(' '), [Validators.required]),
+        lastName: this.formBuilder.control(user?.displayName?.split(' ').slice(-1).join(' '), [Validators.required])
+      });
+      const pictureFormChanges$ = (this.form?.get('photoSource') as AbstractControl).valueChanges.pipe(
+        tap((newValue) => {
+          this.handleFileChange(newValue.files)
+        })
+      );
+      state.hold(pictureFormChanges$);
+      changeDetectRef.markForCheck();
     })
-
-
-    const pictureFormChanges$ = (this.form?.get('photoSource') as AbstractControl).valueChanges.pipe(
-      tap((newValue) => {
-        this.handleFileChange(newValue.files)
-      })
-    );
-    state.hold(pictureFormChanges$);
    }
 
 
@@ -56,17 +63,17 @@ export class DetailsComponent {
   handleFileChange(event: any) {
     this.fileToUpload = event.target.files[0];
     const reader = new FileReader();
-    reader.onload = (loadEvent) => (this.profilePreview = loadEvent?.target?.result);
+    reader.onload = (loadEvent) => (this.state.set({ profilePreview: loadEvent?.target?.result }));
     reader.readAsDataURL(event.target.files[0]);
-    this.form.patchValue({
+    this.form?.patchValue({
       photoSource: this.fileToUpload
     });
   }
 
   resetImage() {
     this.fileToUpload = undefined;
-    this.profilePreview = null;
-    this.form.patchValue({
+    this.state.set({ profilePreview: null })
+    this.form?.patchValue({
       photo: null,
       photoSource: null
     });
@@ -88,16 +95,17 @@ export class DetailsComponent {
 
 
   submit() {
-    if (this.form.valid) {
+    if (this.form?.valid) {
       this.uploaImage(this.form.value as SubmitData)
     }
   }
 
 
   uploaImage(submitData: SubmitData) {
-    if (this.authService.userData) {
+    const user = this.state.get('user');
+    if (user) {
       const { downloadUrl$, uploadProgress$ } = this.storageService.uploadFileAndGetMetadata(
-        `media/${this.authService.userData?.uid}/media/`,
+        `media/${user?.uid}/media/`,
         this.fileToUpload as File,
       );
 
@@ -106,16 +114,16 @@ export class DetailsComponent {
       const effect$ = downloadUrl$.pipe(
         switchMap(url =>
           from(
-            (this.authService.userData as firebase.User).updateProfile({
+            (user as firebase.User).updateProfile({
               photoURL: url,
-              displayName: submitData?.firstName ? `${submitData.firstName} ${submitData.lastName}` : this.authService.userData?.displayName
+              displayName: submitData?.firstName ? `${submitData.firstName} ${submitData.lastName}` : user?.displayName
             })
           )
         ),
         tap(() => {
           this.fileToUpload = undefined;
-          this.profilePreview = null;
-          this.form.patchValue({
+          this.state.set({profilePreview: null})
+          this.form?.patchValue({
             photo: null,
             photoSource: null
           });

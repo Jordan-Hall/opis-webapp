@@ -1,36 +1,35 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { from } from 'rxjs';
-import { switchMap, tap, map, catchError } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
+import { switchMap, tap, map, catchError, withLatestFrom } from 'rxjs/operators';
 import firebase from 'firebase';
 import { User } from './interfaces/user';
-
+import { BoincService } from '@opishub/boinc';
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseAuthService {
-  userData?: firebase.User;
+  userData$ = this.fireAuth.authState.pipe(tap(user => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  })) as Observable<User>
   constructor(
     protected fireStore: AngularFirestore,
     protected fireAuth: AngularFireAuth,
-    protected ngZone: NgZone
-  ) {
-    this.fireAuth.authState.subscribe((user) => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-      } else {
-        localStorage.removeItem('user');
-      }
-    });
-  }
+    protected ngZone: NgZone,
+    private boincService: BoincService
+  ) {}
 
   login(username: string, password: string) {
     return from(
       this.fireAuth.signInWithEmailAndPassword(username, password)
     ).pipe(
-      switchMap(result => this.setUserData(result.user as firebase.User))
+      withLatestFrom(this.boincService.login(username, password)),
+      switchMap(([result, auth]) => this.setUserData(result.user as firebase.User, auth))
     )
   }
 
@@ -38,8 +37,10 @@ export class FirebaseAuthService {
     return from(
       this.fireAuth.createUserWithEmailAndPassword(username, password)
     ).pipe(
+      switchMap(() => this.boincService.register(username, password)),
       switchMap(() => this.sendVerificationMail()),
-      switchMap((result) => this.setUserData(result as firebase.User))
+      withLatestFrom(this.boincService.login(username, password)),
+      switchMap(([result, auth]) => this.setUserData(result as firebase.User, auth)),
     )
   }
 
@@ -55,14 +56,16 @@ export class FirebaseAuthService {
     return from(this.fireAuth.sendPasswordResetEmail(passwordResetEmail))
   }
 
-  private setUserData(user: firebase.User) {
+  private setUserData(user: firebase.User, authToken?: string, credit?: string) {
     const userRef: AngularFirestoreDocument<User> = this.fireStore.doc(`users/${user.uid}`);
     return from(userRef.set({
       uid: user.uid,
       email: user.email as string,
       displayName: user.displayName as string,
       photoURL: user.photoURL as string,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      authToken: authToken,
+      credit
     }, {
       merge: true
     })).pipe(map(() => user), catchError(error => {

@@ -1,0 +1,10 @@
+{
+  "/boinc/*": {
+    "target": "http://127.0.0.1/opishub",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/boinc": ""
+    }
+  }
+}
