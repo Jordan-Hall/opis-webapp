@@ -598,7 +598,8 @@
     }
   },
   "cli": {
-    "defaultCollection": "@nrwl/angular"
+    "defaultCollection": "@nrwl/angular",
+    "packageManager": "pnpm"
   },
   "schematics": {
     "@nrwl/angular": {
