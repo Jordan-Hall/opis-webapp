@@ -442,6 +442,9 @@
       "sourceRoot": "apps/webapp/src",
       "prefix": "opis",
       "architect": {
+        "firebase": {
+          "builder": "@nxtend/firebase:firebase"
+        },
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "outputs": ["{options.outputPath}"],
@@ -598,7 +601,8 @@
     }
   },
   "cli": {
-    "defaultCollection": "@nrwl/angular"
+    "defaultCollection": "@nrwl/angular",
+    "packageManager": "pnpm"
   },
   "schematics": {
     "@nrwl/angular": {
