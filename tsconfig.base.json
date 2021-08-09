@@ -26,6 +26,7 @@
       "@opishub/auth-firebase": ["libs/auth/firebase/src/index.ts"],
       "@opishub/auth-ui": ["libs/auth/ui/src/index.ts"],
       "@opishub/boinc": ["libs/boinc/src/index.ts"],
+      "@opishub/passport-firebase": ["libs/passport/firebase/src/index.ts"],
       "@opishub/rx-for": ["libs/zoneaware/rx-for/src/index.ts"],
       "crypto": ["./node_modules/crypto-browserify"],
       "stream": ["./node_modules/stream-browserify"],

@@ -6,6 +6,7 @@ import { switchMap, tap, map, catchError, withLatestFrom } from 'rxjs/operators'
 import firebase from 'firebase';
 import { User } from './interfaces/user';
 import { BoincService } from '@opishub/boinc';
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,7 +22,8 @@ export class FirebaseAuthService {
     protected fireStore: AngularFirestore,
     protected fireAuth: AngularFireAuth,
     protected ngZone: NgZone,
-    private boincService: BoincService
+    private boincService: BoincService,
+    private httpClient: HttpClient
   ) {}
 
   login(username: string, password: string) {
@@ -34,13 +36,12 @@ export class FirebaseAuthService {
   }
 
   register(username: string, password: string) {
-    return from(
-      this.fireAuth.createUserWithEmailAndPassword(username, password)
-    ).pipe(
-      switchMap(() => this.boincService.register(username, password)),
+    return this.httpClient.post('http://localhost:4200/api', {
+      email: username,
+      password,
+      displayName: username
+    }).pipe(
       switchMap(() => this.sendVerificationMail()),
-      withLatestFrom(this.boincService.login(username, password)),
-      switchMap(([result, auth]) => this.setUserData(result as firebase.User, auth)),
     )
   }
 

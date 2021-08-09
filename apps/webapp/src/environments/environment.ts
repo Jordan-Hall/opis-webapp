@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  boincUrl: "http://localhost:4200/boinc",
+  boincUrl: "https://boinc.bakerlab.org/rosetta",
   creditMaths: 0.001,
   firebase: {
     apiKey: "AIzaSyDZrAkyGbk_PcuMP34j8CpkoFsIc7FeHKY",

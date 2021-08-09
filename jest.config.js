@@ -13,5 +13,7 @@ module.exports = {
     '<rootDir>/libs/pref-utils/cdk',
     '<rootDir>/libs/boinc',
     '<rootDir>/libs/ms-to-time',
+    '<rootDir>/apps/backend/opishub',
+    '<rootDir>/libs/passport/firebase',
   ],
 };

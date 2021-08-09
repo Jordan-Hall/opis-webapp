@@ -39,6 +39,9 @@
     "auth-ui": {
       "tags": ["ui"]
     },
+    "backend-opishub": {
+      "tags": []
+    },
     "boinc": {
       "tags": []
     },
@@ -46,6 +49,9 @@
       "tags": []
     },
     "ms-to-time": {
+      "tags": []
+    },
+    "passport-firebase": {
       "tags": []
     },
     "pref-utils-cdk": {

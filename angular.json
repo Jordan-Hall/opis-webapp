@@ -124,6 +124,56 @@
         }
       }
     },
+    "backend-opishub": {
+      "root": "apps/backend/opishub",
+      "sourceRoot": "apps/backend/opishub/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/backend/opishub",
+            "main": "apps/backend/opishub/src/main.ts",
+            "tsConfig": "apps/backend/opishub/tsconfig.app.json",
+            "assets": ["apps/backend/opishub/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/backend/opishub/src/environments/environment.ts",
+                  "with": "apps/backend/opishub/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "backend-opishub:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/backend/opishub/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/backend/opishub"],
+          "options": {
+            "jestConfig": "apps/backend/opishub/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "boinc": {
       "projectType": "library",
       "root": "libs/boinc",
@@ -243,6 +293,38 @@
               "libs/ms-to-time/src/**/*.ts",
               "libs/ms-to-time/src/**/*.html"
             ]
+          }
+        }
+      }
+    },
+    "passport-firebase": {
+      "root": "libs/passport/firebase",
+      "sourceRoot": "libs/passport/firebase/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/passport/firebase",
+            "tsConfig": "libs/passport/firebase/tsconfig.lib.json",
+            "packageJson": "libs/passport/firebase/package.json",
+            "main": "libs/passport/firebase/src/index.ts",
+            "assets": ["libs/passport/firebase/*.md"]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/passport/firebase/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/passport/firebase"],
+          "options": {
+            "jestConfig": "libs/passport/firebase/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
@@ -500,7 +582,7 @@
             }
           },
           "options": {
-            "proxyConfig": "apps/webapp/src/proxy.conf.json"
+            "proxyConfig": "apps/webapp/proxy.conf.json"
           },
           "defaultConfiguration": "development"
         },
