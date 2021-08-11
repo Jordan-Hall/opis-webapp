@@ -9,7 +9,8 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BOINCSERVER, TOTALCREDITMATHS } from '@opishub/boinc';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './AuthInterceptor';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -51,6 +52,11 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     { provide: BOINCSERVER, useValue: environment.boincUrl },
     { provide: TOTALCREDITMATHS, useValue: environment.creditMaths },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

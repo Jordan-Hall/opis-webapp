@@ -1,5 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException, Inject } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { Strategy, ExtractJwt } from 'passport-firebase-jwt';
 import { FirebaseService } from './passport-firebase.service';
 

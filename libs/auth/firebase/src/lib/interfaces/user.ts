@@ -1,9 +1,9 @@
 export interface User {
-  uid: string;
-  email: string;
-  displayName: string;
-  photoURL: string;
-  emailVerified: boolean;
-  authToken?: string;
-  credit?: string;
+  uid?: string | undefined;
+  email?: string | undefined;
+  displayName?: string | undefined;
+  photoURL?: string | undefined;
+  emailVerified?: boolean | undefined;
+  credit?: string | undefined;
+  boincUser: Record<string, unknown> | undefined
 }

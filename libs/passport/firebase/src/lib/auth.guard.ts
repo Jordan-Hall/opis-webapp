@@ -1,6 +1,7 @@
 import { ExecutionContext, Injectable, CanActivate } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class FirebaseAuthGuard extends AuthGuard('firebase-auth') implements CanActivate {
@@ -8,7 +9,7 @@ export class FirebaseAuthGuard extends AuthGuard('firebase-auth') implements Can
     super();
   }
 
-  canActivate(context: ExecutionContext) {
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>('public', [
       context.getHandler(),
       context.getClass(),

@@ -35,9 +35,10 @@ export class AppController {
     });
 
     if (apiResult) {
-      return this.firebase.firebaseApp.auth().createUser(newUser);
+      const result = await this.firebase.firebaseApp.auth().createUser(newUser);
+      return { result }
     } else {
-      return apiResult;
+      throw new Error('Login not found')
     }
   }
 

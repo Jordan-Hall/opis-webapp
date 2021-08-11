@@ -41,11 +41,12 @@ export class RegisterComponent {
   ) {
     const saveEffect$ = this.register$.pipe(
       switchMap((register) =>
-        authService.register(register.email, register.password),
+        authService.register(register.email, register.password).pipe(tap(result => {
+          if (result) {
+            router.navigate(['verify'], { relativeTo: route.parent })
+          }
+        })),
       ),
-      tap(() => {
-        router.navigate(['verify'], { relativeTo: route.parent })
-      })
     );
     state.hold(saveEffect$);
   }

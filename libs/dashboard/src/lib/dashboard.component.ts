@@ -36,12 +36,17 @@ export class DashboardComponent {
     state.connect('user', authService.userData$);
     state.connect('credits', this.user$.pipe(
       filter(user => !!user),
-      switchMap(user => boincService.getCreditInformation(user.credit as string)),
-      map(credit => ({
-        time: credit.time,
-        amount: parseFloat(credit.amount || '0') * totalCreditMaths,
-        avgCredit: parseFloat(credit.avgCredit || '0') * totalCreditMaths,
-      }))
+      switchMap(user => {
+        const id = (user.boincUser?.id as string[])[0];
+        return boincService.getCreditInformation(id)
+      }),
+      map(credit => {
+        return {
+          time: credit.time,
+          amount: parseFloat(credit.amount || '0') * totalCreditMaths,
+          avgCredit: parseFloat(credit.avgCredit || '0') * totalCreditMaths,
+        }
+      })
     ))
    }
 }

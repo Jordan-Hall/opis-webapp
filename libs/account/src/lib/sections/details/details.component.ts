@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {  from } from 'rxjs';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { tap, switchMap, map, filter } from 'rxjs/operators';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageUtilService } from '@opis/storage';
 import { FirebaseStorageService } from '@opis/firestorage';
@@ -12,8 +12,8 @@ import { RxEffects } from '@opis/rx-effects';
 interface DetailsComponentState {
   photo: FileList
   uploadProgress: number | undefined;
-  user: User;
-  profilePreview: string | ArrayBuffer | null
+  user: User | null;
+  profilePreview: string | ArrayBuffer | null | undefined
 }
 type SubmitData = { photo: string, firstName: string, lastName: string }
 
@@ -39,8 +39,8 @@ export class DetailsComponent {
     effects: RxEffects,
     changeDetectRef: ChangeDetectorRef
   ) {
-    state.connect('user', this.authService.userData$);
-    state.connect('profilePreview', this.authService.userData$.pipe(map(user => user.photoURL)));
+    state.connect('user', this.authService.userData$.pipe(filter((user) => !!user)));
+    state.connect('profilePreview', this.authService.userData$.pipe(filter((user) => !!user) ,map(user => user.photoURL)));
     effects.register(state.select('user'), user => {
       this.form = this.formBuilder.group({
         photo: [user?.photoURL, [Validators.required]],
@@ -114,7 +114,7 @@ export class DetailsComponent {
       const effect$ = downloadUrl$.pipe(
         switchMap(url =>
           from(
-            (user as firebase.User).updateProfile({
+            (user as unknown as firebase.User).updateProfile({
               photoURL: url,
               displayName: submitData?.firstName ? `${submitData.firstName} ${submitData.lastName}` : user?.displayName
             })
