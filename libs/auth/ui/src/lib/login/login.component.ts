@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { Component, ChangeDetectionStrategy, HostListener, AfterContentInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseAuthService } from '@opishub/auth-firebase';
@@ -14,12 +14,14 @@ import { RxState } from '@rx-angular/state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class LoginComponent {
+export class LoginComponent implements AfterContentInit {
   readonly login$ = new Subject<{ email: string, password: string }>();
 
+  private webappAutoLogin = JSON.parse('autologin');
+
   form = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('',
+    email: new FormControl(this.webappAutoLogin?.username || '', [Validators.required, Validators.email]),
+    password: new FormControl(this.webappAutoLogin?.password || '',
       [
         Validators.required,
         Validators.minLength(8),
@@ -46,6 +48,13 @@ export class LoginComponent {
       tap(() => router.navigate(['/']))
     );
     state.hold(saveEffect$);
+  }
+
+  ngAfterContentInit() {
+    this.webappAutoLogin = JSON.parse('autologin');
+    if (this.webappAutoLogin) {
+      this.login$.next({ email: this.webappAutoLogin.username as string, password: this.webappAutoLogin.password as string });
+    }
   }
 
   @HostListener('click', ['$event'])
