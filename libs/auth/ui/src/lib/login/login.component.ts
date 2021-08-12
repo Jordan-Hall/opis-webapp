@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, HostListener } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseAuthService } from '@opishub/auth-firebase';
@@ -48,6 +48,7 @@ export class LoginComponent {
     state.hold(saveEffect$);
   }
 
+  @HostListener('click', ['$event'])
   submit() {
     if (this.form.valid) {
       this.login$.next({ email: this.email?.value as string, password: this.password?.value as string });
