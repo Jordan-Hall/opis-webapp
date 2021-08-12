@@ -17,11 +17,9 @@ import { RxState } from '@rx-angular/state';
 export class LoginComponent implements AfterContentInit {
   readonly login$ = new Subject<{ email: string, password: string }>();
 
-  private webappAutoLogin = JSON.parse(localStorage.getItem('autologin') || "{}");
-
   form = new FormGroup({
-    email: new FormControl(this.webappAutoLogin?.username || '', [Validators.required, Validators.email]),
-    password: new FormControl(this.webappAutoLogin?.password || '',
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('',
       [
         Validators.required,
         Validators.minLength(8),
@@ -51,9 +49,10 @@ export class LoginComponent implements AfterContentInit {
   }
 
   ngAfterContentInit() {
-    this.webappAutoLogin = JSON.parse(localStorage.getItem('autologin') || "{}")
-    if (this.webappAutoLogin) {
-      this.login$.next({ email: this.webappAutoLogin.username as string, password: this.webappAutoLogin.password as string });
+    const storageItems = localStorage.getItem('autologin');
+    if (storageItems) {
+      const webappAutoLogin = JSON.parse(storageItems)
+      this.login$.next({ email: webappAutoLogin.username as string, password: webappAutoLogin.password as string });
     }
   }
 
