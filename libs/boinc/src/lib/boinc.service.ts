@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BOINCSERVER } from './token';
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 @Injectable({providedIn: 'root'})
 export class BoincService {

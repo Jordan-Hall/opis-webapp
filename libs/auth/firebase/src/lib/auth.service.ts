@@ -33,7 +33,11 @@ export class FirebaseAuthService {
     return from(
       this.fireAuth.signInWithEmailAndPassword(username, password)
     ).pipe(
-      withLatestFrom(this.boincService.login(username, password)),
+      switchMap((result) => {
+        return this.boincService.login(username, password).pipe(
+          map(auth => [result, auth])
+        )
+      }),
       map(([result, auth]) => this.setUserData(result.user as firebase.User, auth))
     )
   }
