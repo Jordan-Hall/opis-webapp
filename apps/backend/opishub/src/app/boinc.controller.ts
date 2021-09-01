@@ -5,7 +5,9 @@ import fetch from 'node-fetch';
 import { environment } from '../environments/environment';
 import md5 from 'crypto-js/md5';
 import { Parser } from 'xml2js';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('boinc')
 @Controller('boinc')
 export class BoincController {
   constructor(private readonly firebase: FirebaseService) {}
