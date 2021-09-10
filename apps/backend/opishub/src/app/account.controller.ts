@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, Query, Headers, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { FirebaseService } from '@opishub/passport-firebase';
 import { SignupDto } from './model/signup';
-import jwt_decode from "jwt-decode";
 import fetch from 'node-fetch';
 import { environment } from '../environments/environment';
 import md5 from 'crypto-js/md5';
@@ -49,10 +48,12 @@ export class AccountController {
         await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(createAccount.uid).set({
           boincAuth: apiResult,
           credit: 0
-        })
+        });
+        const loggedInUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(newUser.email, newUser.password);
+        const token = await loggedInUser.user.getIdToken(false);
         return {
           name: newUser.displayName,
-          token: await this.firebase.firebaseApp.auth().createCustomToken(createAccount.uid)
+          token: token
         }
       }
     }
@@ -61,6 +62,15 @@ export class AccountController {
 
   @Get("login")
   async login(@Query('email') email: string, @Query('password') password: string) {
+    if (!(email && password)) {
+      throw new BadRequestException("All inputs are required");
+    }
+
+    const validUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(email, password);
+    if (!validUser) {
+      throw new BadRequestException("Invalid email or password");
+    }
+
     const passHash = this.getPasswordMd5(password, email);
     const res = await fetch(`${environment.boincServer}/lookup_account.php?email_addr=${email}&passwd_hash=${passHash}&get_opaque_auth=1`);
     const text = await res.text();
@@ -80,27 +90,15 @@ export class AccountController {
       });
     });
 
-    const account = await fetch(`${environment.boincServer}/am_get_info.php?account_key=${result.account_out?.authenticator[0]}`, {
-      method: 'POST'
+    await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(validUser.user.uid).set({
+      boincAuth: result.account_out?.authenticator[0]
     });
+    const token = await validUser.user.getIdToken(true);
 
-    const accountText = await account.text();
-    const accountTextRes = await new Promise<{ am_get_info_reply: Record<string, unknown> }>((res, rej) => {
-      const parser = new Parser(
-        {
-          trim: true,
-          explicitArray: true
-        });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      parser.parseString(accountText, (err: any, parsed: any) => {
-        if (err) {
-          rej(err);
-        }
-        res(parsed);
-      });
-    });
-    return accountTextRes.am_get_info_reply;
+    return {
+      name: validUser.user.displayName,
+      token: token
+    }
   }
 
   @Get('info')
@@ -109,14 +107,16 @@ export class AccountController {
       throw new UnauthorizedException();
     }
 
-    const decodedToken = jwt_decode(token);
-    // @ts-ignore
-    const validUser = await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(decodedToken.uid).get();
+    const loggedInUser = await this.firebase.firebaseApp.auth().verifyIdToken(token);
+    if (!loggedInUser) {
+      throw new UnauthorizedException();
+    }
+
+    const validUser = await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(loggedInUser.uid).get();
     if (!validUser) {
       throw new UnauthorizedException();
     }
 
-    // @ts-ignore
     const res = await fetch(`${environment.boincServer}/show_user.php?userid=${validUser.data().boincAuth}&format=xml`);
     const text = await res.text();
 
