@@ -50,7 +50,10 @@ export class AccountController {
           boincAuth: apiResult,
           credit: 0
         })
-        return await this.firebase.firebaseApp.auth().createCustomToken(createAccount.uid);
+        return {
+          name: newUser.displayName,
+          token: await this.firebase.firebaseApp.auth().createCustomToken(createAccount.uid)
+        }
       }
     }
     throw new BadRequestException("Account already exists");
