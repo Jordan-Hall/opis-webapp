@@ -64,6 +64,7 @@ specifiers:
   passport: ^0.4.1
   passport-firebase-jwt: ^1.1.0
   prettier: ^2.3.2
+  randomstring: ^1.2.1
   reflect-metadata: ^0.1.13
   rxjs: ~6.6.7
   stream-browserify: ^3.0.0
@@ -107,6 +108,7 @@ dependencies:
   node-fetch: 2.6.1
   passport: 0.4.1
   passport-firebase-jwt: 1.1.0
+  randomstring: 1.2.1
   reflect-metadata: 0.1.13
   rxjs: 6.6.7
   stream-browserify: 3.0.0
@@ -5184,6 +5186,11 @@ packages:
   /array-union/2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
+
+  /array-uniq/1.0.2:
+    resolution: {integrity: sha1-X8w3OSB3VyPP1k1lxkvvU7+eum0=}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /array-uniq/1.0.3:
     resolution: {integrity: sha1-r2rId6Jcx/dOBYiUdThY39sk/bY=}
@@ -12382,6 +12389,10 @@ packages:
     resolution: {integrity: sha512-PgIdVpn5y5Yns8vqb8FzBUEYn98V3xcPgawAkkgj0YJ0qDsnHCiNmZYfOGMgOvoB0eWFLpYbhxUR3mxfDIMvpw==}
     dev: true
 
+  /randombytes/2.0.3:
+    resolution: {integrity: sha1-Z0yZdgkBw8QRJ3GjHlIdw0nMCew=}
+    dev: false
+
   /randombytes/2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
     dependencies:
@@ -12392,6 +12403,14 @@ packages:
     dependencies:
       randombytes: 2.1.0
       safe-buffer: 5.2.1
+
+  /randomstring/1.2.1:
+    resolution: {integrity: sha512-eMnfell9XuU3jfCx3f4xCaFAt0YMFPZhx9R3PSStmLarDKg5j5vivqKhf/8pvG+VX/YkxsckHK/VPUrKa5V07A==}
+    hasBin: true
+    dependencies:
+      array-uniq: 1.0.2
+      randombytes: 2.0.3
+    dev: false
 
   /range-parser/1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}

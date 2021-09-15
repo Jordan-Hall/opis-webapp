@@ -15,6 +15,7 @@ import fetch from 'node-fetch';
 import { environment } from '../environments/environment';
 import md5 from 'crypto-js/md5';
 import { Parser } from 'xml2js';
+import { generate } from 'randomstring';
 
 const USER_DOC = 'USERS';
 
@@ -26,12 +27,13 @@ export class AccountController {
 
   @Post('signup')
   async signup(@Body() newUser: SignupDto) {
-    if (!(newUser.email && newUser.password && newUser.displayName)) {
+    if (!(newUser.email && newUser.password)) {
       throw new BadRequestException('All inputs are required');
     }
 
-    const passHash = this.getPasswordMd5(newUser.password, newUser.email);
-    const url = `${environment.boincServer}/create_account.php?email_addr=${newUser.email}&passwd_hash=${passHash}&user_name=${newUser.displayName}`;
+    const boincEmail = generate() + '@opishub.org';
+    const passHash = this.getPasswordMd5(newUser.password, boincEmail);
+    const url = `${environment.boincServer}/create_account.php?email_addr=${boincEmail}&passwd_hash=${passHash}&user_name=${boincEmail}`;
     const res = await fetch(url);
     const result = await res.text();
 
@@ -60,6 +62,7 @@ export class AccountController {
       });
 
       await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(createAccount.uid).set({
+        boincEmail: boincEmail,
         boincAuth: apiResult,
         credit: 10
       });
@@ -67,7 +70,7 @@ export class AccountController {
       const loggedInUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(newUser.email, newUser.password);
       const token = await loggedInUser.user.getIdToken(false);
       return {
-        name: newUser.displayName,
+        boincEmail: boincEmail,
         token: token
       };
     }
@@ -83,8 +86,12 @@ export class AccountController {
       throw new BadRequestException(err.message);
     });
 
-    const passHash = this.getPasswordMd5(password, email);
-    const res = await fetch(`${environment.boincServer}/lookup_account.php?email_addr=${email}&passwd_hash=${passHash}&get_opaque_auth=1`);
+    const token = await validUser.user.getIdToken(true);
+    const loggedInUser = await this.authUserToken(token);
+    const boincEmail = loggedInUser.boincEmail;
+
+    const passHash = this.getPasswordMd5(password, boincEmail);
+    const res = await fetch(`${environment.boincServer}/lookup_account.php?email_addr=${boincEmail}&passwd_hash=${passHash}&get_opaque_auth=1`);
     const text = await res.text();
     const result = await new Promise<{ account_out: { authenticator: string[] } }>((res, rej) => {
       const parser = new Parser(
@@ -106,9 +113,8 @@ export class AccountController {
       boincAuth: result.account_out?.authenticator[0]
     });
 
-    const token = await validUser.user.getIdToken(true);
     return {
-      name: validUser.user.displayName,
+      boincEmail: boincEmail,
       token: token
     };
   }
