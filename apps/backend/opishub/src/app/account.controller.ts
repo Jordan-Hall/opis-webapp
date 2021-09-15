@@ -173,7 +173,7 @@ export class AccountController {
   }
 
   getPasswordMd5(email: string, password: string) {
-    return md5(email);
+    return md5(password + email.toLowerCase());
   }
 
   async authUserToken(token: string) {
