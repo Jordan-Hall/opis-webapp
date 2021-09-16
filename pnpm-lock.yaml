@@ -48,6 +48,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': 4.19.0
   '@typescript-eslint/parser': 4.19.0
   class-transformer: ^0.4.0
+  crypto: ^1.0.1
   crypto-browserify: ^3.12.0
   crypto-js: ^4.1.1
   cypress: ^7.7.0
@@ -101,6 +102,7 @@ dependencies:
   '@tailwindcss/forms': 0.3.3_tailwindcss@2.2.7
   '@tailwindcss/typography': 0.4.1_tailwindcss@2.2.7
   class-transformer: 0.4.0
+  crypto: 1.0.1
   crypto-browserify: 3.12.0
   crypto-js: 4.1.1
   firebase: 8.9.0
@@ -6479,6 +6481,11 @@ packages:
     engines: {node: '>=8'}
     dev: false
     optional: true
+
+  /crypto/1.0.1:
+    resolution: {integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==}
+    deprecated: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
+    dev: false
 
   /css-blank-pseudo/0.1.4:
     resolution: {integrity: sha512-LHz35Hr83dnFeipc7oqFDmsjHdljj3TQtxGGiNWSOsTLIAubSm4TEz8qCaKFpk7idaQ1GfWscF4E6mgpBysA1w==}

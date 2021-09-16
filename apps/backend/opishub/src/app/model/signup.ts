@@ -6,4 +6,7 @@ export class SignupDto {
 
   @ApiProperty()
   password: string;
+
+  @ApiProperty()
+  displayName: string;
 }

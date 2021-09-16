@@ -13,7 +13,6 @@ import { SignupDto } from './model/signup';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import fetch from 'node-fetch';
 import { environment } from '../environments/environment';
-import md5 from 'crypto-js/md5';
 import { Parser } from 'xml2js';
 import { generate } from 'randomstring';
 
@@ -27,53 +26,30 @@ export class AccountController {
 
   @Post('signup')
   async signup(@Body() newUser: SignupDto) {
-    if (!(newUser.email && newUser.password)) {
+    if (!(newUser.email && newUser.password && newUser.displayName)) {
       throw new BadRequestException('All inputs are required');
     }
 
-    const boincEmail = generate() + '@opishub.org';
-    const passHash = this.getPasswordMd5(newUser.password, boincEmail);
-    const url = `${environment.boincServer}/create_account.php?email_addr=${boincEmail}&passwd_hash=${passHash}&user_name=${boincEmail}`;
-    const res = await fetch(url);
-    const result = await res.text();
+    const uniqueUsername = generate();
+    const boincEmail = (uniqueUsername + '@opishub.org');
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const apiResult = await new Promise<any>((res, rej) => {
-      const parser = new Parser(
-        {
-          trim: true,
-          explicitArray: true
-        });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      parser.parseString(result, (err: any, parsed: any) => {
-        if (err) {
-          rej(err);
-        }
-        res(parsed);
-      });
-    }).then(result => {
-      return result.account_out?.authenticator[0];
+    const createAccount = await this.firebase.firebaseApp.auth().createUser(newUser).catch(err => {
+      throw new BadRequestException(err.message);
     });
 
-    if (apiResult) {
-      const createAccount = await this.firebase.firebaseApp.auth().createUser(newUser).catch(err => {
-        throw new BadRequestException(err.message);
-      });
+    await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(createAccount.uid).set({
+      boincUsername: uniqueUsername,
+      boincEmail: boincEmail,
+      credit: 10
+    });
 
-      await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(createAccount.uid).set({
-        boincEmail: boincEmail,
-        boincAuth: apiResult,
-        credit: 10
-      });
-
-      const loggedInUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(newUser.email, newUser.password);
-      const token = await loggedInUser.user.getIdToken(false);
-      return {
-        boincEmail: boincEmail,
-        token: token
-      };
-    }
+    const loggedInUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(newUser.email, newUser.password);
+    const token = await loggedInUser.user.getIdToken(false);
+    return {
+      boincUsername: uniqueUsername,
+      boincEmail: boincEmail,
+      token: token
+    };
   }
 
   @Get('login')
@@ -90,33 +66,24 @@ export class AccountController {
     const loggedInUser = await this.authUserToken(token);
     const boincEmail = loggedInUser.boincEmail;
 
-    const passHash = this.getPasswordMd5(password, boincEmail);
-    const res = await fetch(`${environment.boincServer}/lookup_account.php?email_addr=${boincEmail}&passwd_hash=${passHash}&get_opaque_auth=1`);
-    const text = await res.text();
-    const result = await new Promise<{ account_out: { authenticator: string[] } }>((res, rej) => {
-      const parser = new Parser(
-        {
-          trim: true,
-          explicitArray: true
-        });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      parser.parseString(text, (err: any, parsed: any) => {
-        if (err) {
-          rej(err);
-        }
-        res(parsed);
-      });
-    });
-
-    await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(validUser.user.uid).update({
-      boincAuth: result.account_out?.authenticator[0]
-    });
-
     return {
+      boincUsername: loggedInUser.boincUsername,
       boincEmail: boincEmail,
       token: token
     };
+  }
+
+  @Post('boincAuth')
+  @ApiBearerAuth('access-token')
+  async boincAuth(@Headers('Authorization') token, @Query('auth') auth: string) {
+    if (!(auth)) {
+      throw new BadRequestException('All inputs are required');
+    }
+
+    const validUser = await this.authUserToken(token);
+    await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(validUser.uid).update({
+      boincAuth: auth
+    });
   }
 
   @Get('info')
@@ -172,10 +139,6 @@ export class AccountController {
     });
   }
 
-  getPasswordMd5(email: string, password: string) {
-    return md5(password + email.toLowerCase());
-  }
-
   async authUserToken(token: string) {
     if (!token) {
       throw new UnauthorizedException('Authorization header required');
@@ -195,4 +158,3 @@ export class AccountController {
   }
 
 }
-
