@@ -120,6 +120,22 @@ export class AccountController {
       });
     });
 
+    const newBoincCredit = result.user?.total_credit
+    const gainedTokens = parseFloat(((newBoincCredit - validUser.boincCredit) * CREDIT_MULTIPLIER).toFixed(8))
+    if (gainedTokens > 0.00000001) {
+      const newTotal = validUser.credit.total + gainedTokens;
+      const newCompute = validUser.credit.compute + gainedTokens;
+      await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(validUser.uid).update({
+        boincCredit: newBoincCredit,
+        credit: {
+          total: newTotal,
+          compute: newCompute
+        }
+      });
+      validUser.credit.total = newTotal;
+      validUser.credit.compute = newCompute;
+    }
+
     return {
       credit: {
         total: parseFloat(validUser.credit.total),
