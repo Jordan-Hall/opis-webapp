@@ -100,40 +100,55 @@ export class AccountController {
       throw new UnauthorizedException(err.message);
     });
 
-    const res = await fetch(`${environment.boincServer}/show_user.php?auth=${validUser.boincAuth}&format=xml`);
-    const text = await res.text();
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await new Promise<any>((res, rej) => {
-      const parser = new Parser(
-        {
-          trim: true,
-          explicitArray: true
-        });
+    const results = await Promise.all(environment.boincServers.map(async urls => {
+      const res = await fetch(`${urls}/show_user.php?auth=${validUser.boincAuth}&format=xml`);
+      const text = await res.text();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      parser.parseString(text, (err: any, parsed: any) => {
-        if (err) {
-          rej(err);
-        }
-        res(parsed);
-      });
-    });
+      return await new Promise<any>((res, rej) => {
+        const parser = new Parser(
+          {
+            trim: true,
+            explicitArray: true
+          });
 
-    const newBoincCredit = result.user?.total_credit
-    const gainedTokens = parseFloat(((newBoincCredit - validUser.boincCredit) * CREDIT_MULTIPLIER).toFixed(8))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        parser.parseString(text, (err: any, parsed: any) => {
+          if (err) {
+            rej(err);
+          }
+          res(parsed);
+        });
+      });
+    }));
+
+
+    const projectInfo = results.reduce((prev, curr) => {
+      prev.credit += curr.user?.total_credit;
+      prev.time += curr.user?.create_time - curr.user?.expavg_time[0];
+      prev.estCredit += parseFloat(curr.user?.expavg_credit[0])
+      return prev;
+    }, {credit: 0 , time: 0, estCredit:0 });
+
+    const gainedTokens = parseFloat(((projectInfo.credit - validUser.boincCredit) * CREDIT_MULTIPLIER).toFixed(8))
     if (gainedTokens > 0.00000001) {
       const newTotal = validUser.credit.total + gainedTokens;
       const newCompute = validUser.credit.compute + gainedTokens;
+      const time = projectInfo.time;
+      const estCredit = projectInfo.estCredit * CREDIT_MULTIPLIER
       await this.firebase.firebaseApp.firestore().collection(USER_DOC).doc(validUser.uid).update({
-        boincCredit: newBoincCredit,
+        boincCredit: projectInfo.credit,
         credit: {
           total: newTotal,
           compute: newCompute
-        }
+        },
+        time,
+        estCredit,
       });
       validUser.credit.total = newTotal;
       validUser.credit.compute = newCompute;
+      validUser.time = time;
+      validUser.estCredit = estCredit;
     }
 
     return {
@@ -143,8 +158,8 @@ export class AccountController {
         referral: parseFloat(validUser.credit.referral),
         share: parseFloat(validUser.credit.share),
       },
-      time: this.secondsToDhms(result.user?.create_time - result.user?.expavg_time[0]),
-      estCredit: parseFloat(result.user?.expavg_credit[0]) * CREDIT_MULTIPLIER
+      time: this.secondsToDhms(validUser.time),
+      estCredit: validUser.estCredit
     };
   }
 
