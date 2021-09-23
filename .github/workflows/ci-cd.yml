@@ -21,7 +21,7 @@ jobs:
     - name: Install pnpm
       run: npm i -g pnpm
     - name: pnpm Build
-      run: pnpm install
+      run: pnpm install --no-frozen-lockfile
 
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
