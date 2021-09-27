@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { FirebaseService } from '@opishub/passport-firebase';
 import { SignupDto } from './model/signup';
+import { LoginDto } from './model/login';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import fetch from 'node-fetch';
 import { environment } from '../environments/environment';
@@ -60,12 +61,12 @@ export class AccountController {
   }
 
   @Get('login')
-  async login(@Query('email') email: string, @Query('password') password: string) {
-    if (!(email && password)) {
+  async login(@Body() currentUser: LoginDto) {
+    if (!(currentUser.email && currentUser.password)) {
       throw new BadRequestException('All inputs are required');
     }
 
-    const validUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(email, password).catch((err) => {
+    const validUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(currentUser.email, currentUser.password).catch((err) => {
       throw new BadRequestException(err.message);
     });
 
@@ -83,7 +84,7 @@ export class AccountController {
   @Post('boincAuth')
   @ApiBearerAuth('access-token')
   async boincAuth(@Headers('Authorization') token, @Query('auth') auth: string) {
-    if (!(auth)) {
+    if (!auth) {
       throw new BadRequestException('All inputs are required');
     }
 

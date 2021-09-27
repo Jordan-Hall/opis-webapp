@@ -2,7 +2,7 @@ import type * as firebase from 'firebase-admin';
 
 export const environment = {
   production: false,
-  boincServer: 'https://boinc.bakerlab.org/rosetta',
+  boincServer: 'https://universeathome.pl/universe',
   firebase: {
     databaseURL: "https://fir-opis-coin-default-rtdb.firebaseio.com",
     serviceAccount: {
