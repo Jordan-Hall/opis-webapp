@@ -90,6 +90,8 @@
     "@nrwl/nx-cloud": "latest",
     "@nrwl/tao": "12.5.2",
     "@nrwl/workspace": "12.5.2",
+    "@nx-extend/conventional-changelog": "^0.0.1",
+    "@nx-extend/strapi": "^1.0.4",
     "@types/crypto-js": "^4.0.2",
     "@types/jest": "26.0.8",
     "@types/node": "14.14.33",

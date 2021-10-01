@@ -256,6 +256,24 @@
         }
       }
     },
+    "marketing-opishub-org": {
+      "root": "apps/marketing/opishub-org",
+      "projectType": "application",
+      "sourceRoot": "apps/marketing/opishub-org/src",
+      "architect": {
+        "serve": {
+          "builder": "@nx-extend/strapi:serve"
+        },
+        "build": {
+          "builder": "@nx-extend/strapi:build",
+          "configurations": {
+            "production": {
+              "production": true
+            }
+          }
+        }
+      }
+    },
     "ms-to-time": {
       "projectType": "library",
       "root": "libs/ms-to-time",
