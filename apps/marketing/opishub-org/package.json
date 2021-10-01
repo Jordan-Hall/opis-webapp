@@ -40,7 +40,6 @@
     "strapi-plugin-email-designer": "^1.1.7",
     "strapi-plugin-entity-relationship-chart": "^3.1.0",
     "strapi-plugin-i18n": "3.6.8",
-    "strapi-plugin-navigation": "^1.0.4",
     "strapi-plugin-oembed": "^0.4.0",
     "strapi-plugin-react-editorjs": "^1.5.0",
     "strapi-plugin-upload": "3.6.8",
