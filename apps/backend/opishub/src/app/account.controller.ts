@@ -32,6 +32,8 @@ export class AccountController {
       throw new BadRequestException('All inputs are required');
     }
 
+    newUser.email = newUser.email.trim()
+
     const uniqueUsername = generate();
     const boincEmail = (uniqueUsername + '@opishub.org');
 
@@ -66,7 +68,9 @@ export class AccountController {
       throw new BadRequestException('All inputs are required');
     }
 
-    const validUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(currentUser.email, currentUser.password).catch((err) => {
+    currentUser.email = currentUser.email.trim()
+
+    const validUser = await this.firebase.firebaseClient.auth().signInWithEmailAndPassword(currentUser.email.trim(), currentUser.password).catch((err) => {
       throw new BadRequestException(err.message);
     });
 
