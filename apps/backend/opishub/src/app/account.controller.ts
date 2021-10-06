@@ -144,7 +144,7 @@ export class AccountController {
         referral: parseFloat(validUser.credit.referral),
         share: parseFloat(validUser.credit.share),
       },
-      time: this.secondsToDhms(result.user?.create_time - result.user?.expavg_time[0]),
+      time: this.secondsToDhms(result.user?.expavg_time[0] - result.user?.create_time),
       estCredit: parseFloat(result.user?.expavg_credit[0]) * CREDIT_MULTIPLIER
     };
   }
