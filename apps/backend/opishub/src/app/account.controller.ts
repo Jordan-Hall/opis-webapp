@@ -60,7 +60,7 @@ export class AccountController {
     };
   }
 
-  @Get('login')
+  @Post('login')
   async login(@Body() currentUser: LoginDto) {
     if (!(currentUser.email && currentUser.password)) {
       throw new BadRequestException('All inputs are required');
