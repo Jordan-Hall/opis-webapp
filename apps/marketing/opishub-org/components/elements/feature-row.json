@@ -11,9 +11,6 @@
       "type": "string",
       "required": true
     },
-    "description": {
-      "type": "text"
-    },
     "media": {
       "model": "file",
       "via": "related",
@@ -22,12 +19,16 @@
         "videos"
       ],
       "plugin": "upload",
-      "required": true
+      "required": true,
+      "pluginOptions": {}
     },
     "link": {
       "type": "component",
       "repeatable": false,
       "component": "links.link"
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }

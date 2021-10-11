@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "forms",
+  "info": {
+    "name": "forms",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "fields": {
+      "type": "dynamiczone",
+      "components": [
+        "form-fields.text",
+        "form-fields.textarea",
+        "form-fields.email"
+      ],
+      "required": true
+    },
+    "captcha": {
+      "type": "boolean"
+    },
+    "submitText": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

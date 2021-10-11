@@ -48,6 +48,28 @@
     "dashboard": {
       "tags": []
     },
+    "hooks-use-dark-mode": {
+      "tags": ["hooks"]
+    },
+    "hooks-use-debounce": {
+      "tags": ["hooks"]
+    },
+    "hooks-use-firestore-query": {
+      "tags": ["hooks"]
+    },
+    "hooks-use-media": {
+      "tags": ["hooks"]
+    },
+    "hooks-use-memo-compare": {
+      "tags": ["hooks"]
+    },
+    "marketing-frontend": {
+      "tags": []
+    },
+    "marketing-frontend-e2e": {
+      "tags": [],
+      "implicitDependencies": ["marketing-frontend"]
+    },
     "marketing-opishub-org": {
       "tags": []
     },

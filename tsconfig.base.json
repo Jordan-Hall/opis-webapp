@@ -23,6 +23,19 @@
       "@opis/rx-effects": ["libs/pref-utils/rx-effects/src/index.ts"],
       "@opis/storage": ["libs/storage/core/src/index.ts"],
       "@opis/template": ["libs/ui/webapp/template/src/index.ts"],
+      "@opishub-hooks/useAuth": ["libs/hooks/use-auth/src/index.ts"],
+      "@opishub-hooks/useDarkMode": ["libs/hooks/use-dark-mode/src/index.ts"],
+      "@opishub-hooks/useDebounce": ["libs/hooks/use-debounce/src/index.ts"],
+      "@opishub-hooks/useFirestoreQuery": [
+        "libs/hooks/use-firestore-query/src/index.ts"
+      ],
+      "@opishub-hooks/useLocalStorage": [
+        "libs/hooks/use-local-storage/src/index.ts"
+      ],
+      "@opishub-hooks/useMedia": ["libs/hooks/use-media/src/index.ts"],
+      "@opishub-hooks/useMemoCompare": [
+        "libs/hooks/use-memo-compare/src/index.ts"
+      ],
       "@opishub/auth-firebase": ["libs/auth/firebase/src/index.ts"],
       "@opishub/auth-ui": ["libs/auth/ui/src/index.ts"],
       "@opishub/boinc": ["libs/boinc/src/index.ts"],

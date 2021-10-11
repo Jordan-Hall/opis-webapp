@@ -11,9 +11,6 @@
       "type": "string",
       "required": true
     },
-    "description": {
-      "type": "text"
-    },
     "icon": {
       "model": "file",
       "via": "related",
@@ -21,7 +18,11 @@
         "images"
       ],
       "plugin": "upload",
-      "required": true
+      "required": true,
+      "pluginOptions": {}
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_form_fields_textareas",
+  "info": {
+    "name": "Textarea",
+    "icon": "align-justify"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean"
+    },
+    "minLength": {
+      "type": "integer"
+    },
+    "maxLength": {
+      "type": "integer"
+    }
+  }
+}

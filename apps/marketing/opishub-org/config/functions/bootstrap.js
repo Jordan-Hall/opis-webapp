@@ -9,5 +9,11 @@
  *
  * See more details here: https://strapi.io/documentation/developer-docs/latest/setup-deployment-guides/configurations.html#bootstrap
  */
+const admin = require("firebase-admin");
 
-module.exports = () => {};
+module.exports = () => {
+  admin.initializeApp({
+    credential: admin.credential.cert(strapi.config.get('firebase.serviceAccount', 'defaultValueIfUndefined')),
+  });
+  strapi.firebase = admin;
+};

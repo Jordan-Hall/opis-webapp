@@ -15,5 +15,11 @@ module.exports = {
     '<rootDir>/libs/ms-to-time',
     '<rootDir>/apps/backend/opishub',
     '<rootDir>/libs/passport/firebase',
+    '<rootDir>/apps/marketing/frontend',
+    '<rootDir>/libs/hooks/use-memo-compare',
+    '<rootDir>/libs/hooks/use-media',
+    '<rootDir>/libs/hooks/use-dark-mode',
+    '<rootDir>/libs/hooks/use-firestore-query',
+    '<rootDir>/libs/hooks/use-debounce',
   ],
 };
