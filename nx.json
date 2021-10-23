@@ -73,6 +73,9 @@
     "marketing-opishub-org": {
       "tags": []
     },
+    "marketing-ui": {
+      "tags": ["ui"]
+    },
     "ms-to-time": {
       "tags": []
     },

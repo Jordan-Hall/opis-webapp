@@ -563,6 +563,47 @@
         }
       }
     },
+    "marketing-ui": {
+      "root": "libs/marketing/ui",
+      "sourceRoot": "libs/marketing/ui/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/web:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/marketing/ui",
+            "tsConfig": "libs/marketing/ui/tsconfig.lib.json",
+            "project": "libs/marketing/ui/package.json",
+            "entryFile": "libs/marketing/ui/src/index.ts",
+            "external": ["react/jsx-runtime"],
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "libs/marketing/ui/README.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/marketing/ui/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/marketing/ui"],
+          "options": {
+            "jestConfig": "libs/marketing/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "ms-to-time": {
       "projectType": "library",
       "root": "libs/ms-to-time",

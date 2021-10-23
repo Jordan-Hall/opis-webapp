@@ -36,6 +36,7 @@
       "@opishub-hooks/useMemoCompare": [
         "libs/hooks/use-memo-compare/src/index.ts"
       ],
+      "@opishub-marketing/ui": ["libs/marketing/ui/src/index.ts"],
       "@opishub/auth-firebase": ["libs/auth/firebase/src/index.ts"],
       "@opishub/auth-ui": ["libs/auth/ui/src/index.ts"],
       "@opishub/boinc": ["libs/boinc/src/index.ts"],

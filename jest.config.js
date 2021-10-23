@@ -21,5 +21,6 @@ module.exports = {
     '<rootDir>/libs/hooks/use-dark-mode',
     '<rootDir>/libs/hooks/use-firestore-query',
     '<rootDir>/libs/hooks/use-debounce',
+    '<rootDir>/libs/marketing/ui',
   ],
 };
