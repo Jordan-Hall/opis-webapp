@@ -18,7 +18,7 @@ import { Parser } from 'xml2js';
 import { generate } from 'randomstring';
 
 const USER_DOC = 'USERS';
-const CREDIT_MULTIPLIER = 0.001;
+const CREDIT_MULTIPLIER = 0.0001;
 
 @Controller('/account')
 export class AccountController {
